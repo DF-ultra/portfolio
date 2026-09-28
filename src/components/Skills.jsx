@@ -1,12 +1,34 @@
 import React from 'react';
-import { Code2, Box, Video, Palette, CheckCircle2, Cpu } from 'lucide-react';
+import { Code2, Box, Camera, Palette, CheckCircle2, Cpu } from 'lucide-react';
 
 export default function Skills({ customSkills }) {
+  const renderCategoryIcon = (cat) => {
+    if (React.isValidElement(cat.icon)) {
+      return cat.icon;
+    }
+    const type = cat.iconType || '';
+    const title = (cat.title || '').toLowerCase();
+
+    if (type === 'Code2' || title.includes('software') || title.includes('web') || title.includes('code')) {
+      return <Code2 size={28} color="var(--accent-cyan)" />;
+    }
+    if (type === 'Box' || title.includes('solidworks') || title.includes('cad') || title.includes('3d')) {
+      return <Box size={28} color="#3b82f6" />;
+    }
+    if (type === 'Camera' || title.includes('camera') || title.includes('photo') || title.includes('editing')) {
+      return <Camera size={28} color="#8b5cf6" />;
+    }
+    if (type === 'Palette' || title.includes('drawing') || title.includes('art')) {
+      return <Palette size={28} color="#ec4899" />;
+    }
+    return <Cpu size={28} color="var(--accent-cyan)" />;
+  };
+
   const initialSkillCategories = [
     {
       title: 'Software & Web Development',
       subtitle: '4th Year Engineering Core',
-      icon: <Code2 size={28} color="var(--accent-cyan)" />,
+      iconType: 'Code2',
       description: 'Building modern, scalable web applications and algorithms.',
       skills: [
         'React.js / JavaScript / TypeScript',
@@ -20,7 +42,7 @@ export default function Skills({ customSkills }) {
     {
       title: 'SolidWorks & 3D CAD',
       subtitle: 'Mechanical & Structural Engineering',
-      icon: <Box size={28} color="#3b82f6" />,
+      iconType: 'Box',
       description: 'Designing precision 3D parts, assemblies, and technical drafts.',
       skills: [
         'SolidWorks 3D Part Modeling',
@@ -34,7 +56,7 @@ export default function Skills({ customSkills }) {
     {
       title: 'Photo & Video Editing',
       subtitle: 'Digital Content & Motion VFX',
-      icon: <Video size={28} color="#8b5cf6" />,
+      iconType: 'Camera',
       description: 'Crafting high-impact video reels, color grades, and graphics.',
       skills: [
         'Adobe Premiere Pro Reel Editing',
@@ -48,7 +70,7 @@ export default function Skills({ customSkills }) {
     {
       title: 'Drawing & Digital Art',
       subtitle: 'Visual Aesthetics & Fine Art',
-      icon: <Palette size={28} color="#ec4899" />,
+      iconType: 'Palette',
       description: 'Translating creative imagination into sketch work and visual art.',
       skills: [
         'Pencil & Fine Art Sketching',
@@ -102,7 +124,7 @@ export default function Skills({ customSkills }) {
                     justifyContent: 'center',
                   }}
                 >
-                  {cat.icon}
+                  {renderCategoryIcon(cat)}
                 </div>
                 <div>
                   <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.25rem', color: 'var(--text-main)' }}>
