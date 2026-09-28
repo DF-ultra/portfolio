@@ -159,7 +159,7 @@ export default function Hero({ heroInfo }) {
               }}
             >
               <img
-                src="/profile.jpg"
+                src="./profile.jpg"
                 alt="Dawit Fseha"
                 style={{
                   width: '100%',
