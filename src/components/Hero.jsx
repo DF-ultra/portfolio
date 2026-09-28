@@ -1,10 +1,7 @@
 import React from 'react';
-import Hero3DCanvas from './Hero3DCanvas';
-import { ArrowRight, Box, Cpu, Download, Github, Linkedin, Mail, Sparkles } from 'lucide-react';
+import { ArrowRight, Box, Cpu, Download, Github, Linkedin, Mail, Sparkles, Palette, MapPin, Zap } from 'lucide-react';
 
 export default function Hero({ heroInfo }) {
-  const currentStatus = (heroInfo && heroInfo.status) || 'SENIOR // 4TH YEAR SOFTWARE ENGINEER @ MEKELLE UNIVERSITY';
-
   return (
     <section
       id="hero"
@@ -18,44 +15,19 @@ export default function Hero({ heroInfo }) {
         overflow: 'hidden',
       }}
     >
-      {/* 3D WebGL Background Canvas */}
-      <Hero3DCanvas />
-
-      {/* Subtle Blur & Radial Vignette Overlay */}
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          zIndex: 0,
-          backdropFilter: 'blur(2px)',
-          WebkitBackdropFilter: 'blur(2px)',
-          background: 'radial-gradient(circle at center, rgba(11, 15, 25, 0.25) 0%, rgba(11, 15, 25, 0.65) 100%)',
-          pointerEvents: 'none',
-        }}
-      />
+      {/* Background Circular Decorative Shapes */}
+      <div className="hero-bg-circles" aria-hidden="true">
+        <div className="hero-circle circle-1" />
+        <div className="hero-circle circle-2" />
+        <div className="hero-circle circle-3" />
+        <div className="hero-circle circle-ring-1" />
+        <div className="hero-circle circle-ring-2" />
+      </div>
 
       {/* Content Overlay */}
-      <div
-        className="section-container"
-        style={{
-          position: 'relative',
-          zIndex: 1,
-          width: '100%',
-          display: 'grid',
-          gridTemplateColumns: '1.2fr 0.8fr',
-          gap: '40px',
-          alignItems: 'center',
-        }}
-      >
+      <div className="section-container hero-layout-grid">
         {/* Left Column: Text & Intro */}
         <div>
-          <div className="cyber-status" style={{ marginBottom: '20px' }}>
-            <span className="pulse-dot"></span>
-            <span>{currentStatus}</span>
-          </div>
 
           <h1
             style={{
@@ -84,10 +56,20 @@ export default function Hero({ heroInfo }) {
 
           {/* Key Skill Pills */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginBottom: '36px' }}>
-            <span className="glass-pill"><Cpu size={14} /> Full Stack Web</span>
-            <span className="glass-pill"><Box size={14} /> SolidWorks 3D CAD</span>
-            <span className="glass-pill"><Sparkles size={14} /> Photo & Video VFX</span>
-            <span className="glass-pill">🎨 Fine Art & Illustration</span>
+            {(heroInfo && heroInfo.taglines && heroInfo.taglines.length > 0) ? (
+              heroInfo.taglines.map((t, idx) => (
+                <span key={t.id || idx} className="glass-pill">
+                  <Sparkles size={14} /> {t.label}
+                </span>
+              ))
+            ) : (
+              <>
+                <span className="glass-pill"><Cpu size={14} /> Full Stack Web</span>
+                <span className="glass-pill"><Box size={14} /> SolidWorks 3D CAD</span>
+                <span className="glass-pill"><Sparkles size={14} /> Photo & Video VFX</span>
+                <span className="glass-pill"><Palette size={14} /> Fine Art & Illustration</span>
+              </>
+            )}
           </div>
 
           {/* CTA Buttons */}
@@ -192,7 +174,7 @@ export default function Hero({ heroInfo }) {
               DAWIT FSEHA
             </h3>
             <span style={{ fontSize: '0.85rem', color: 'var(--accent-cyan)', fontFamily: 'var(--font-code)', display: 'block', marginBottom: '14px' }}>
-              ID: DF-ENG-2026 // SYSTEM ONLINE
+              SOFTWARE ENGINEER
             </span>
 
             <div
@@ -204,11 +186,20 @@ export default function Hero({ heroInfo }) {
                 fontFamily: 'var(--font-code)',
                 color: 'var(--text-muted)',
                 textAlign: 'left',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
               }}
             >
-              <div>📍 Location: Mekelle University, ET</div>
-              <div>⚡ Specialization: Software + CAD</div>
-              <div>🎨 Media Skills: Video, Photo & Art</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <MapPin size={14} color="var(--accent-cyan)" /> Location: Mekelle University, ET
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Zap size={14} color="var(--accent-cyan)" /> Specialization: Software + CAD
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Palette size={14} color="var(--accent-cyan)" /> Media Skills: Video, Photo & Art
+              </div>
             </div>
           </div>
         </div>

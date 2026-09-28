@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, Github, Eye, Sparkles, Box, Video, Palette, Code2, X, Play } from 'lucide-react';
+import { ExternalLink, Github, Eye, Sparkles, Box, Video, Palette, Code2, X, Play, Globe } from 'lucide-react';
 
 export default function Projects({ customProjects }) {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -10,13 +10,13 @@ export default function Projects({ customProjects }) {
       id: 1,
       title: 'Mekelle Univ Software Portal',
       category: 'Software Engineering',
-      typeBadge: 'Full Stack App',
+      typeBadge: 'landing website',
       icon: <Code2 size={18} color="var(--accent-cyan)" />,
-      description: 'A modern high-performance web platform built for academic project tracking, student course workflows, and data management.',
-      technologies: ['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'CSS Glassmorphism'],
-      github: 'https://github.com/DF-Ultra',
-      demo: 'https://github.com/DF-Ultra',
-      details: 'Built during 4th year Software Engineering studies at Mekelle University. Features secure user authentication, responsive UI, real-time dashboard analytics, and clean RESTful API integration.',
+      description: 'A modern high-performance web platform built for getting detailed information about mekelle university colleges,departments and other relevant information about the university.',
+      technologies: ['HTML5', 'CSS3', 'JavaScript'],
+      github: 'https://df-ultra.github.io/MU/',
+      demo: 'https://df-ultra.github.io/MU/',
+      details: 'Built during 3rd year Software Engineering studies at Mekelle University.  responsive UI and clean navigation.',
       accent: 'linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(59, 130, 246, 0.2))'
     },
     {
@@ -27,8 +27,8 @@ export default function Projects({ customProjects }) {
       icon: <Box size={18} color="#3b82f6" />,
       description: 'Precision mechanical gearbox assembly created in SolidWorks with motion simulation and stress tolerance analysis.',
       technologies: ['SolidWorks', '3D Modeling', 'Motion Study', 'WebGL CAD'],
-      github: 'https://github.com/DF-Ultra',
-      demo: 'https://github.com/DF-Ultra',
+      github: 'https://github.com/DF-ultra/SolidWork-designs',
+      demo: 'https://github.com/DF-Ultra/SolidWork-designs',
       details: 'Complex multi-part mechanical assembly featuring planetary gear ratios, exploded view schematics, and mechanical stress simulation to optimize load distribution.',
       accent: 'linear-gradient(135deg, rgba(59, 130, 246, 0.2), rgba(139, 92, 246, 0.2))'
     },
@@ -39,7 +39,7 @@ export default function Projects({ customProjects }) {
       typeBadge: 'Video Reel & VFX',
       icon: <Video size={18} color="#8b5cf6" />,
       description: 'Dynamic cinematic video showcase featuring custom motion graphics, sound design, speed ramping, and color grading.',
-      technologies: ['Premiere Pro', 'After Effects', 'Color Grading', 'Sound Design'],
+      technologies: ['davinci Resolve', 'Color Grading', 'Sound Design'],
       github: 'https://github.com/DF-Ultra',
       demo: 'https://github.com/DF-Ultra',
       details: 'High-energy video edit combining motion graphics overlays, synchronized audio beats, LUT color correction, and seamless visual transitions.',
@@ -47,7 +47,7 @@ export default function Projects({ customProjects }) {
     },
     {
       id: 4,
-      title: 'Cyberpunk Concept Fine Art',
+      title: ' Concept Fine Art',
       category: 'Drawing & Art',
       typeBadge: 'Fine Art & Digital Sketch',
       icon: <Palette size={18} color="#ec4899" />,
@@ -73,14 +73,14 @@ export default function Projects({ customProjects }) {
     },
     {
       id: 6,
-      title: 'Interactive 3D Portfolio Matrix',
+      title: 'Interactive 3D Portfolio ',
       category: 'Software Engineering',
       typeBadge: 'WebGL Web App',
       icon: <Code2 size={18} color="var(--accent-cyan)" />,
       description: 'Next-gen cyberpunk interactive portfolio with WebGL Three.js 3D canvas background and dark glassmorphic design.',
       technologies: ['React', 'Three.js', 'Vite', 'CSS3 Variables', 'Lucide Icons'],
-      github: 'https://github.com/DF-Ultra',
-      demo: 'https://github.com/DF-Ultra',
+      github: 'https://df-ultra.github.io/portfolio/',
+      demo: 'https://df-ultra.github.io/portfolio/',
       details: 'Custom engineered web application featuring mouse-guided 3D WebGL particle fields, interactive CAD visualizer lab, responsive grid systems, and smooth UI animations.',
       accent: 'linear-gradient(135deg, rgba(0, 229, 255, 0.2), rgba(59, 130, 246, 0.2))'
     }
@@ -94,10 +94,17 @@ export default function Projects({ customProjects }) {
     ? projectsData
     : projectsData.filter(p => p.category === activeFilter);
 
+  const renderProjectIcon = (p) => {
+    if (p.category === 'SolidWorks CAD') return <Box size={18} color="#3b82f6" />;
+    if (p.category === 'Video & Photo Editing') return <Video size={18} color="#8b5cf6" />;
+    if (p.category === 'Drawing & Art') return <Palette size={18} color="#ec4899" />;
+    return <Code2 size={18} color="var(--accent-cyan)" />;
+  };
+
   return (
     <section id="projects" className="section-container">
       <div className="section-header">
-        <span className="section-subtitle">// PORTFOLIO SHOWCASE</span>
+        <span className="section-subtitle"> PORTFOLIO SHOWCASE</span>
         <h2 className="section-title">
           FEATURED <span className="neon-title">WORK & PROJECTS</span>
         </h2>
@@ -133,7 +140,7 @@ export default function Projects({ customProjects }) {
       </div>
 
       {/* Projects Grid */}
-      <div className="grid-3">
+      <div className="projects-grid">
         {filteredProjects.map((project) => (
           <div
             key={project.id}
@@ -162,7 +169,7 @@ export default function Projects({ customProjects }) {
             <div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
                 <span className="glass-pill">
-                  {project.icon} {project.typeBadge}
+                  {renderProjectIcon(project)} {project.typeBadge}
                 </span>
                 <button
                   onClick={() => setSelectedProject(project)}
@@ -219,7 +226,7 @@ export default function Projects({ customProjects }) {
                   className="neon-button-secondary"
                   style={{ flex: 1, padding: '8px', fontSize: '0.8rem', justifyContent: 'center' }}
                 >
-                  <Github size={15} /> CODE REPO
+                  <Globe size={15} /> VISIT WEBSITE
                 </a>
               </div>
             </div>

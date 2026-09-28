@@ -7,7 +7,8 @@ import Projects from './components/Projects';
 import About from './components/About';
 import Contact from './components/Contact';
 import AdminModal from './components/AdminModal';
-import { Cpu } from 'lucide-react';
+import { INITIAL_PROJECTS, INITIAL_SKILLS, INITIAL_HERO_INFO } from './data/portfolioData';
+import { Cpu, Phone, Mail, Linkedin, Github } from 'lucide-react';
 
 export default function App() {
   const [isAdmin, setIsAdmin] = useState(() => {
@@ -18,21 +19,17 @@ export default function App() {
 
   const [projects, setProjects] = useState(() => {
     const saved = localStorage.getItem('davinci_portfolio_projects');
-    return saved ? JSON.parse(saved) : [];
+    return (saved && JSON.parse(saved).length > 0) ? JSON.parse(saved) : INITIAL_PROJECTS;
   });
 
   const [skills, setSkills] = useState(() => {
     const saved = localStorage.getItem('davinci_portfolio_skills');
-    return saved ? JSON.parse(saved) : [];
+    return (saved && JSON.parse(saved).length > 0) ? JSON.parse(saved) : INITIAL_SKILLS;
   });
 
   const [heroInfo, setHeroInfo] = useState(() => {
     const saved = localStorage.getItem('davinci_portfolio_bio');
-    return saved ? JSON.parse(saved) : {
-      name: 'Dawit Fseha',
-      status: 'SENIOR // 4TH YEAR SOFTWARE ENGINEER @ MEKELLE UNIVERSITY',
-      bio: "Hi, I'm Dawit Fseha. I merge Software Development with SolidWorks 3D CAD modeling, high-end Photo & Video Editing, and fine Digital Art & Drawing to craft immersive digital & mechanical experiences."
-    };
+    return saved ? JSON.parse(saved) : INITIAL_HERO_INFO;
   });
 
   useEffect(() => {
@@ -105,22 +102,111 @@ export default function App() {
       <footer
         style={{
           borderTop: '1px solid var(--border-subtle)',
-          background: 'rgba(7, 10, 18, 0.95)',
-          padding: '24px',
+          background: 'var(--nav-bg)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
+          padding: '36px 24px',
           textAlign: 'center',
           fontSize: '0.85rem',
           color: 'var(--text-muted)',
           fontFamily: 'var(--font-code)',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap' }}>
-          <span>© 2026 DAWIT FSEHA</span>
-          <span>//</span>
-          <span>4TH YEAR SOFTWARE ENGINEER @ MEKELLE UNIVERSITY</span>
-          <span>//</span>
-          <span style={{ color: 'var(--accent-cyan)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-            <Cpu size={14} /> THREE.JS & REACT
-          </span>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px', alignItems: 'center' }}>
+
+          {/* Contact Infos */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
+            <a
+              href="tel:+251992949485"
+              style={{
+                color: 'var(--text-main)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Phone size={15} color="var(--accent-cyan)" />
+              <span>+251 992 949 485</span>
+            </a>
+
+            <a
+              href="mailto:dawitfseha@email.com"
+              style={{
+                color: 'var(--text-main)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Mail size={15} color="var(--accent-cyan)" />
+              <span>dawitfseha@email.com</span>
+            </a>
+
+            <a
+              href="https://linkedin.com/in/dawit-fseha"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                color: 'var(--text-main)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Linkedin size={15} color="var(--accent-cyan)" />
+              <span>linkedin.com/in/dawit-fseha</span>
+            </a>
+
+            <a
+              href="https://github.com/DF-Ultra"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                color: 'var(--text-main)',
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                background: 'var(--bg-subtle)',
+                border: '1px solid var(--border-subtle)',
+                transition: 'all 0.2s ease',
+              }}
+            >
+              <Github size={15} color="var(--accent-cyan)" />
+              <span>github.com/DF-Ultra</span>
+            </a>
+          </div>
+
+          {/* Copyright & Info */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', flexWrap: 'wrap', fontSize: '0.8rem' }}>
+            <span>© 2026 DAWIT FSEHA</span>
+            <span>   </span>
+            <span> SOFTWARE ENGINEER @ MEKELLE UNIVERSITY</span>
+            <span>   </span>
+            <span style={{ color: 'var(--accent-cyan)', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+             
+            </span>
+          </div>
         </div>
       </footer>
     </div>

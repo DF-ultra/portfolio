@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShieldCheck, Lock, Key, LogOut, Plus, Trash2, Edit3, X, Check, Sparkles, FolderPlus, Layers, User } from 'lucide-react';
+import { ShieldCheck, Lock, Key, LogOut, Plus, Trash2, Edit3, X, Check, Sparkles, FolderPlus, Layers, User, ArrowUp, ArrowDown, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export default function AdminModal({
   isOpen,
@@ -35,6 +35,7 @@ export default function AdminModal({
   // New Skill Form state
   const [newSkillCategoryIdx, setNewSkillCategoryIdx] = useState(0);
   const [newSkillName, setNewSkillName] = useState('');
+  const [newTagline, setNewTagline] = useState('');
 
   if (!isOpen) return null;
 
@@ -140,6 +141,17 @@ export default function AdminModal({
     }
   };
 
+  // Reorder Projects
+  const handleMoveProject = (index, direction) => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= projects.length) return;
+    const updated = [...projects];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+    setProjects(updated);
+    localStorage.setItem('davinci_portfolio_projects', JSON.stringify(updated));
+  };
+
   // Add Skill
   const handleAddSkill = (e) => {
     e.preventDefault();
@@ -174,9 +186,80 @@ export default function AdminModal({
     localStorage.setItem('davinci_portfolio_skills', JSON.stringify(updated));
   };
 
-  // Bio Update
+  // Reorder Skill Categories
+  const handleMoveSkillCategory = (index, direction) => {
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= skills.length) return;
+    const updated = [...skills];
+    const [moved] = updated.splice(index, 1);
+    updated.splice(targetIndex, 0, moved);
+    setSkills(updated);
+    localStorage.setItem('davinci_portfolio_skills', JSON.stringify(updated));
+  };
+
+  // Reorder Skill Items within category
+  const handleMoveSkillItem = (catIdx, skillIdx, direction) => {
+    const category = skills[catIdx];
+    const targetIndex = direction === 'left' ? skillIdx - 1 : skillIdx + 1;
+    if (targetIndex < 0 || targetIndex >= category.skills.length) return;
+    const updatedSkills = [...category.skills];
+    const [moved] = updatedSkills.splice(skillIdx, 1);
+    updatedSkills.splice(targetIndex, 0, moved);
+
+    const updated = skills.map((cat, idx) => (idx === catIdx ? { ...cat, skills: updatedSkills } : cat));
+    setSkills(updated);
+    localStorage.setItem('davinci_portfolio_skills', JSON.stringify(updated));
+  };
+
+  // Bio & Taglines Updates
   const handleBioChange = (field, val) => {
     const updated = { ...heroInfo, [field]: val };
+    setHeroInfo(updated);
+    localStorage.setItem('davinci_portfolio_bio', JSON.stringify(updated));
+  };
+
+  const handleAddTagline = (e) => {
+    e.preventDefault();
+    if (!newTagline.trim()) return;
+    const currentTaglines = heroInfo.taglines || [
+      { id: 1, label: 'Full Stack Web' },
+      { id: 2, label: 'SolidWorks 3D CAD' },
+      { id: 3, label: 'Photo & Video VFX' },
+      { id: 4, label: 'Fine Art & Illustration' }
+    ];
+    const updatedTaglines = [...currentTaglines, { id: Date.now(), label: newTagline.trim() }];
+    const updated = { ...heroInfo, taglines: updatedTaglines };
+    setHeroInfo(updated);
+    localStorage.setItem('davinci_portfolio_bio', JSON.stringify(updated));
+    setNewTagline('');
+  };
+
+  const handleMoveTagline = (index, direction) => {
+    const taglines = heroInfo.taglines || [
+      { id: 1, label: 'Full Stack Web' },
+      { id: 2, label: 'SolidWorks 3D CAD' },
+      { id: 3, label: 'Photo & Video VFX' },
+      { id: 4, label: 'Fine Art & Illustration' }
+    ];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= taglines.length) return;
+    const updatedTaglines = [...taglines];
+    const [moved] = updatedTaglines.splice(index, 1);
+    updatedTaglines.splice(targetIndex, 0, moved);
+    const updated = { ...heroInfo, taglines: updatedTaglines };
+    setHeroInfo(updated);
+    localStorage.setItem('davinci_portfolio_bio', JSON.stringify(updated));
+  };
+
+  const handleDeleteTagline = (index) => {
+    const taglines = heroInfo.taglines || [
+      { id: 1, label: 'Full Stack Web' },
+      { id: 2, label: 'SolidWorks 3D CAD' },
+      { id: 3, label: 'Photo & Video VFX' },
+      { id: 4, label: 'Fine Art & Illustration' }
+    ];
+    const updatedTaglines = taglines.filter((_, idx) => idx !== index);
+    const updated = { ...heroInfo, taglines: updatedTaglines };
     setHeroInfo(updated);
     localStorage.setItem('davinci_portfolio_bio', JSON.stringify(updated));
   };
@@ -396,7 +479,7 @@ export default function AdminModal({
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
                   <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', color: 'var(--text-main)' }}>
-                    Portfolio Projects
+                    Portfolio Projects (Reorder & Edit)
                   </h4>
                   {!showAddProject && (
                     <button
@@ -437,8 +520,9 @@ export default function AdminModal({
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-cyan)', fontSize: '0.95rem' }}>
-                        {editingProjectId ? '✏️ Edit Project' : '➕ Add New Project'}
+                      <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-cyan)', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        {editingProjectId ? <Edit3 size={15} /> : <Plus size={15} />}
+                        {editingProjectId ? 'Edit Project' : 'Add New Project'}
                       </h5>
                       <button
                         type="button"
@@ -541,9 +625,9 @@ export default function AdminModal({
 
                 {/* Project List */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                  {projects.map((proj) => (
+                  {projects.map((proj, idx) => (
                     <div
-                      key={proj.id}
+                      key={proj.id || idx}
                       style={{
                         background: 'var(--bg-subtle)',
                         border: '1px solid var(--border-subtle)',
@@ -555,18 +639,54 @@ export default function AdminModal({
                         gap: '14px',
                       }}
                     >
-                      <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                          <span className="glass-pill" style={{ fontSize: '0.75rem', padding: '2px 8px' }}>
-                            {proj.typeBadge}
-                          </span>
-                          <span style={{ fontSize: '0.78rem', color: 'var(--accent-cyan)', fontFamily: 'var(--font-code)' }}>
-                            {proj.category}
-                          </span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        {/* Reorder Buttons */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                          <button
+                            type="button"
+                            disabled={idx === 0}
+                            onClick={() => handleMoveProject(idx, 'up')}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: idx === 0 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                              cursor: idx === 0 ? 'not-allowed' : 'pointer',
+                              padding: 0,
+                            }}
+                            title="Move Project Up"
+                          >
+                            <ArrowUp size={16} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={idx === projects.length - 1}
+                            onClick={() => handleMoveProject(idx, 'down')}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: idx === projects.length - 1 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                              cursor: idx === projects.length - 1 ? 'not-allowed' : 'pointer',
+                              padding: 0,
+                            }}
+                            title="Move Project Down"
+                          >
+                            <ArrowDown size={16} />
+                          </button>
                         </div>
-                        <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-main)', fontSize: '1rem' }}>
-                          {proj.title}
-                        </h5>
+
+                        <div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                            <span className="glass-pill" style={{ fontSize: '0.75rem', padding: '2px 8px' }}>
+                              {proj.typeBadge}
+                            </span>
+                            <span style={{ fontSize: '0.78rem', color: 'var(--accent-cyan)', fontFamily: 'var(--font-code)' }}>
+                              {proj.category}
+                            </span>
+                          </div>
+                          <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--text-main)', fontSize: '1rem' }}>
+                            {proj.title}
+                          </h5>
+                        </div>
                       </div>
 
                       <div style={{ display: 'flex', gap: '8px' }}>
@@ -607,7 +727,7 @@ export default function AdminModal({
             {activeTab === 'skills' && (
               <div>
                 <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', color: 'var(--text-main)', marginBottom: '16px' }}>
-                  Manage Skills Matrix
+                  Manage & Reorder Skills Matrix
                 </h4>
 
                 {/* Add Skill Form */}
@@ -659,9 +779,47 @@ export default function AdminModal({
                         padding: '16px',
                       }}
                     >
-                      <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-cyan)', fontSize: '0.95rem', marginBottom: '12px' }}>
-                        {cat.title}
-                      </h5>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <div style={{ display: 'flex', gap: '4px' }}>
+                            <button
+                              type="button"
+                              disabled={catIdx === 0}
+                              onClick={() => handleMoveSkillCategory(catIdx, 'up')}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: catIdx === 0 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                                cursor: catIdx === 0 ? 'not-allowed' : 'pointer',
+                              }}
+                              title="Move Category Up"
+                            >
+                              <ArrowUp size={16} />
+                            </button>
+                            <button
+                              type="button"
+                              disabled={catIdx === skills.length - 1}
+                              onClick={() => handleMoveSkillCategory(catIdx, 'down')}
+                              style={{
+                                background: 'none',
+                                border: 'none',
+                                color: catIdx === skills.length - 1 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                                cursor: catIdx === skills.length - 1 ? 'not-allowed' : 'pointer',
+                              }}
+                              title="Move Category Down"
+                            >
+                              <ArrowDown size={16} />
+                            </button>
+                          </div>
+                          <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-cyan)', fontSize: '0.95rem' }}>
+                            {cat.title}
+                          </h5>
+                        </div>
+                        <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-code)' }}>
+                          {cat.subtitle}
+                        </span>
+                      </div>
+
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                         {cat.skills.map((s, sIdx) => (
                           <span
@@ -669,11 +827,29 @@ export default function AdminModal({
                             className="glass-pill"
                             style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }}
                           >
-                            {s}
+                            <button
+                              type="button"
+                              disabled={sIdx === 0}
+                              onClick={() => handleMoveSkillItem(catIdx, sIdx, 'left')}
+                              style={{ background: 'none', border: 'none', color: 'inherit', cursor: sIdx === 0 ? 'not-allowed' : 'pointer', padding: 0 }}
+                              title="Move Skill Left"
+                            >
+                              <ArrowLeft size={12} />
+                            </button>
+                            <span>{s}</span>
+                            <button
+                              type="button"
+                              disabled={sIdx === cat.skills.length - 1}
+                              onClick={() => handleMoveSkillItem(catIdx, sIdx, 'right')}
+                              style={{ background: 'none', border: 'none', color: 'inherit', cursor: sIdx === cat.skills.length - 1 ? 'not-allowed' : 'pointer', padding: 0 }}
+                              title="Move Skill Right"
+                            >
+                              <ArrowRight size={12} />
+                            </button>
                             <X
                               size={13}
                               onClick={() => handleDeleteSkill(catIdx, s)}
-                              style={{ cursor: 'pointer', color: '#ef4444' }}
+                              style={{ cursor: 'pointer', color: '#ef4444', marginLeft: '4px' }}
                               title="Delete skill"
                             />
                           </span>
@@ -687,9 +863,9 @@ export default function AdminModal({
 
             {/* TAB 3: BIO & TAGLINES MANAGEMENT */}
             {activeTab === 'bio' && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                 <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', color: 'var(--text-main)' }}>
-                  Edit Hero & Bio Information
+                  Edit Hero Bio Summary, Status & Key Taglines
                 </h4>
 
                 <div>
@@ -720,6 +896,92 @@ export default function AdminModal({
                     rows={4}
                     style={inputStyle}
                   />
+                </div>
+
+                {/* Key Taglines / Hero Skill Pills */}
+                <div>
+                  <h5 style={{ fontFamily: 'var(--font-heading)', color: 'var(--accent-cyan)', fontSize: '0.9rem', marginBottom: '10px' }}>
+                    Hero Skill Pills & Taglines (Arrange & Reorder)
+                  </h5>
+
+                  <form onSubmit={handleAddTagline} style={{ display: 'flex', gap: '10px', marginBottom: '16px' }}>
+                    <input
+                      type="text"
+                      value={newTagline}
+                      onChange={(e) => setNewTagline(e.target.value)}
+                      placeholder="Add new tagline (e.g. Next.js & Cloud Arch)"
+                      style={{ ...inputStyle, flex: 1 }}
+                      required
+                    />
+                    <button type="submit" className="neon-button" style={{ padding: '8px 16px', fontSize: '0.8rem' }}>
+                      <Plus size={15} /> Add Tagline
+                    </button>
+                  </form>
+
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {((heroInfo.taglines) || [
+                      { id: 1, label: 'Full Stack Web' },
+                      { id: 2, label: 'SolidWorks 3D CAD' },
+                      { id: 3, label: 'Photo & Video VFX' },
+                      { id: 4, label: 'Fine Art & Illustration' }
+                    ]).map((tag, tIdx, arr) => (
+                      <div
+                        key={tag.id || tIdx}
+                        style={{
+                          background: 'var(--bg-subtle)',
+                          border: '1px solid var(--border-subtle)',
+                          padding: '10px 14px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        <span className="glass-pill" style={{ fontSize: '0.82rem' }}>
+                          {tag.label}
+                        </span>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <button
+                            type="button"
+                            disabled={tIdx === 0}
+                            onClick={() => handleMoveTagline(tIdx, 'up')}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: tIdx === 0 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                              cursor: tIdx === 0 ? 'not-allowed' : 'pointer',
+                            }}
+                            title="Move Tagline Up"
+                          >
+                            <ArrowUp size={15} />
+                          </button>
+                          <button
+                            type="button"
+                            disabled={tIdx === arr.length - 1}
+                            onClick={() => handleMoveTagline(tIdx, 'down')}
+                            style={{
+                              background: 'none',
+                              border: 'none',
+                              color: tIdx === arr.length - 1 ? 'var(--border-subtle)' : 'var(--accent-cyan)',
+                              cursor: tIdx === arr.length - 1 ? 'not-allowed' : 'pointer',
+                            }}
+                            title="Move Tagline Down"
+                          >
+                            <ArrowDown size={15} />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeleteTagline(tIdx)}
+                            style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer', marginLeft: '6px' }}
+                            title="Delete Tagline"
+                          >
+                            <Trash2 size={15} />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Github, Linkedin, Send, Copy, Check, Terminal, Cpu } from 'lucide-react';
+import { Mail, Phone, Github, Linkedin, Send, Copy, Check, Terminal, Cpu } from 'lucide-react';
 import confetti from 'canvas-confetti';
 
 export default function Contact() {
@@ -16,7 +16,7 @@ export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setSubmitted(true);
-    
+
     // Trigger confetti celebration
     try {
       confetti({
@@ -33,7 +33,7 @@ export default function Contact() {
   return (
     <section id="contact" className="section-container" style={{ paddingBottom: '140px' }}>
       <div className="section-header">
-        <span className="section-subtitle">// INITIATE CONNECTION</span>
+        <span className="section-subtitle"> INITIATE CONNECTION</span>
         <h2 className="section-title">
           GET IN <span className="neon-title">TOUCH</span>
         </h2>
@@ -42,16 +42,38 @@ export default function Contact() {
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '0.9fr 1.1fr',
-          gap: '32px',
-          alignItems: 'start',
-        }}
-      >
+      <div className="contact-layout-grid">
         {/* Direct Contact Cards */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Phone Card */}
+          <a
+            href="tel:+251992949485"
+            className="glass-panel"
+            style={{ padding: '20px', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '14px' }}
+          >
+            <div
+              style={{
+                width: '46px',
+                height: '46px',
+                borderRadius: '10px',
+                background: 'rgba(16, 185, 129, 0.1)',
+                border: '1px solid #10b981',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Phone size={22} color="#10b981" />
+            </div>
+            <div>
+              <span style={{ fontSize: '0.78rem', color: '#10b981', fontFamily: 'var(--font-code)' }}>
+                DIRECT PHONE
+              </span>
+              <h4 style={{ fontFamily: 'var(--font-heading)', fontSize: '1rem', color: 'var(--text-main)' }}>
+                +251 992 949 485
+              </h4>
+            </div>
+          </a>
           <div className="glass-panel" style={{ padding: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '12px' }}>
               <div
@@ -107,7 +129,7 @@ export default function Contact() {
                 justifyContent: 'center',
               }}
             >
-              <Github size={22} color="#fff" />
+              <Github size={22} color="#000000ff" />
             </div>
             <div>
               <span style={{ fontSize: '0.78rem', color: 'var(--text-muted)', fontFamily: 'var(--font-code)' }}>
@@ -155,7 +177,7 @@ export default function Contact() {
         {/* Interactive Cyber Terminal Form */}
         <div className="glass-panel" style={{ padding: '28px', border: '1px solid var(--border-neon)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', color: 'var(--accent-cyan)', fontFamily: 'var(--font-code)' }}>
-            <Terminal size={18} /> [TERMINAL // TRANSMIT MESSAGE]
+            <Terminal size={18} /> [TERMINAL / TRANSMIT MESSAGE]
           </div>
 
           {submitted ? (
@@ -251,7 +273,7 @@ export default function Contact() {
               </div>
 
               <button type="submit" className="neon-button" style={{ width: '100%', justifyContent: 'center', marginTop: '8px' }}>
-                <Send size={18} /> TRANSMIT MESSAGE
+                <Send size={18} color="gray" /> <span style={{ color: 'gray' }}>TRANSMIT MESSAGE</span>
               </button>
             </form>
           )}

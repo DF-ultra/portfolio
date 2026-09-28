@@ -66,7 +66,7 @@ export default function Skills({ customSkills }) {
   return (
     <section id="skills" className="section-container">
       <div className="section-header">
-        <span className="section-subtitle">// MULTIDISCIPLINARY MATRIX</span>
+        <span className="section-subtitle"> MULTIDISCIPLINARY MATRIX</span>
         <h2 className="section-title">
           ENGINEERING & <span className="neon-title">CREATIVE SKILLS</span>
         </h2>
@@ -75,7 +75,7 @@ export default function Skills({ customSkills }) {
         </p>
       </div>
 
-      <div className="grid-2">
+      <div className="skills-grid">
         {skillCategories.map((cat, idx) => (
           <div
             key={idx}
@@ -118,7 +118,7 @@ export default function Skills({ customSkills }) {
                 {cat.description}
               </p>
 
-              <div className="grid-2" style={{ gap: '12px', marginBottom: '20px' }}>
+              <div className="skill-items-grid" style={{ marginBottom: '20px' }}>
                 {cat.skills.map((skill, sIdx) => (
                   <div
                     key={sIdx}

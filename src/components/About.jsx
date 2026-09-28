@@ -26,7 +26,7 @@ export default function About() {
   return (
     <section id="about" className="section-container">
       <div className="section-header">
-        <span className="section-subtitle">// BACKGROUND & PHILOSOPHY</span>
+        <span className="section-subtitle"> BACKGROUND & PHILOSOPHY</span>
         <h2 className="section-title">
           ABOUT <span className="neon-title">DAWIT FSEHA</span>
         </h2>
@@ -35,14 +35,7 @@ export default function About() {
         </p>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1.1fr 0.9fr',
-          gap: '40px',
-          alignItems: 'start',
-        }}
-      >
+      <div className="about-layout-grid">
         {/* Story Bio Card */}
         <div className="glass-panel" style={{ padding: '32px' }}>
           <h3 style={{ fontFamily: 'var(--font-heading)', fontSize: '1.4rem', color: 'var(--text-main)', marginBottom: '16px', display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -63,7 +56,7 @@ export default function About() {
                 4th Year
               </div>
               <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-code)' }}>
-                SOFTWARE ENG // MEKELLE UNIV
+                SOFTWARE ENGINEER
               </span>
             </div>
 

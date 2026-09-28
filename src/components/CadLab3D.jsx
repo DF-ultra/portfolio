@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Box, RotateCw, Eye, Palette, Upload, Sparkles, Sliders, Play, Pause } from 'lucide-react';
+import { Box, RotateCw, Eye, Palette, Upload, Sparkles, Sliders, Play, Pause, Settings, Bot, Disc, Globe, Move } from 'lucide-react';
 
 export default function CadLab3D() {
   const containerRef = useRef(null);
@@ -241,7 +241,7 @@ export default function CadLab3D() {
   return (
     <section id="cad-lab" className="section-container" style={{ position: 'relative', zIndex: 2 }}>
       <div className="section-header" style={{ position: 'relative', zIndex: 2 }}>
-        <span className="section-subtitle">// SOLIDWORKS & 3D HARDWARE LAB</span>
+        <span className="section-subtitle"> SOLIDWORKS & 3D HARDWARE LAB</span>
         <h2 className="section-title">
           INTERACTIVE <span className="neon-title">3D CAD VISUALIZER</span>
         </h2>
@@ -251,13 +251,9 @@ export default function CadLab3D() {
       </div>
 
       <div
-        className="glass-panel"
+        className="glass-panel cadlab-layout-grid"
         style={{
           padding: '24px',
-          display: 'grid',
-          gridTemplateColumns: '320px 1fr',
-          gap: '24px',
-          minHeight: '520px',
         }}
       >
         {/* Left Control Panel */}
@@ -270,30 +266,30 @@ export default function CadLab3D() {
               <button
                 onClick={() => handleModelChange('gear', '3D Gear Assembly')}
                 className={selectedModel === 'gear' ? 'neon-button' : 'neon-button-secondary'}
-                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px' }}
+                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px', gap: '8px' }}
               >
-                ⚙️ Mechanical Gear Assembly
+                <Settings size={14} /> Mechanical Gear Assembly
               </button>
               <button
                 onClick={() => handleModelChange('robot', 'Robotic Arm Actuator')}
                 className={selectedModel === 'robot' ? 'neon-button' : 'neon-button-secondary'}
-                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px' }}
+                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px', gap: '8px' }}
               >
-                🤖 Robotic Arm Joint
+                <Bot size={14} /> Robotic Arm Joint
               </button>
               <button
                 onClick={() => handleModelChange('turbine', 'Polyhedron Turbine Core')}
                 className={selectedModel === 'turbine' ? 'neon-button' : 'neon-button-secondary'}
-                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px' }}
+                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px', gap: '8px' }}
               >
-                🌀 Polyhedron Turbine Core
+                <Disc size={14} /> Polyhedron Turbine Core
               </button>
               <button
                 onClick={() => handleModelChange('lattice', 'Structural FEA Lattice')}
                 className={selectedModel === 'lattice' ? 'neon-button' : 'neon-button-secondary'}
-                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px' }}
+                style={{ width: '100%', justifyContent: 'flex-start', fontSize: '0.82rem', padding: '10px 14px', gap: '8px' }}
               >
-                🌐 Structural FEA Mesh
+                <Globe size={14} /> Structural FEA Mesh
               </button>
             </div>
           </div>
@@ -408,7 +404,7 @@ export default function CadLab3D() {
               fontFamily: 'var(--font-code)',
               fontSize: '0.8rem',
               color: 'var(--accent-cyan)',
-              background: 'rgba(11, 15, 25, 0.8)',
+              background: 'none',
               padding: '6px 14px',
               borderRadius: '20px',
               border: '1px solid var(--border-neon)',
@@ -427,15 +423,18 @@ export default function CadLab3D() {
               fontFamily: 'var(--font-code)',
               fontSize: '0.8rem',
               color: 'var(--accent-cyan)',
-              background: 'rgba(11, 15, 25, 0.85)',
+              background: 'none',
               padding: '6px 14px',
               borderRadius: '20px',
               border: '1px solid var(--border-neon)',
               userSelect: 'none',
               pointerEvents: 'none',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
             }}
           >
-            🖐️ Click & Drag Mesh to Rotate
+            <Move size={14} /> Click & Drag Mesh to Rotate
           </div>
 
           {/* Three.js Container */}
